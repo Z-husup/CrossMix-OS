@@ -160,8 +160,8 @@ apply_update() {
         sync
         cp "/mnt/SDCARD/System/usr/trimui/etc/asound.conf" "/etc/asound.conf"
         if [ $? -eq 0 ]; then
-            return 0
             touch /tmp/mustReboot
+            return 0
         else
             echo -ne "${RED}hotfix v$version failed.${NC}\n"
             return 1

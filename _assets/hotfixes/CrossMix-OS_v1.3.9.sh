@@ -134,8 +134,26 @@ apply_update() {
 
     # Fix SSH for debugging
     mkdir -p "/mnt/SDCARD/System/usr/trimui/etc/init.d"
+
+    if [ -f "$updatedir/CrossMix_hotfix_v$Remote_HotfixVersion.zip" ]; then
+        echo -e "${GREEN}hotfix download OK!${NC}"
+        echo "Applying hotfix..."
+        /mnt/SDCARD/System/bin/7zz x -aoa "$updatedir/CrossMix_hotfix_v$Remote_HotfixVersion.zip" -o"/mnt/SDCARD"
+        if [ $? -eq 0 ]; then
+            touch /tmp/mustReboot
+            return 0
+        else
+            echo -ne "${RED}hotfix v$version failed.${NC}\n"
+            return 1
+        fi
+        sync
+    else
+        echo -e "${RED}hotfix download failed.${NC}"
+        return 1
+    fi
+
     sleep 5
-    touch /tmp/mustReboot
+
 }
 
 #######################################################################################################
